@@ -1,5 +1,5 @@
 import React from "react";
-import { RBACComponent, useRBACContext } from ".";
+import { RBACComponent } from "./RBACComponent";
 import { RBACComponentProps } from "./RBAC.types";
 
 export function withRBAC<T extends object>(
