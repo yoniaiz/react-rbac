@@ -1,4 +1,5 @@
 import React, { createContext, useContext } from "react";
+import isEqual from "lodash.isequal";
 
 interface State {
   existingRolesNorm: Record<string, string>;
@@ -90,89 +91,28 @@ export class RBACContextProvider extends React.Component<ProviderProps, State> {
     nextState: Readonly<State>
   ) {
     if (
-      nextProps.permissions?.length &&
-      !nextProps.permissions.every((nextRole) =>
-        this.props.permissions.includes(nextRole)
-      )
-    ) {
-      return true;
-    }
-
-    if (
-      nextProps.roles?.length &&
-      !nextProps.roles.every((nextRole) => this.props.roles.includes(nextRole))
-    ) {
-      return true;
-    }
-
-    if (
-      !this.state.existingPermissions?.length &&
-      nextProps.permissions?.length
-    ) {
-      return true;
-    }
-
-    if (!this.state.existingRoles?.length && nextProps.roles?.length) {
-      return true;
-    }
-
-    if (
-      !Object.values(nextState.blockedRoles).every(
-        (blockedRole) => !!this.state.blockedRoles[blockedRole]
-      )
-    ) {
-      return true;
-    }
-
-    if (
-      !Object.values(nextState.blockedPermissions).every(
-        (blockedPermission) =>
-          !!this.state.blockedPermissions[blockedPermission]
-      )
-    ) {
-      return true;
-    }
-
-    if (
-      !Object.values(nextState.addedPermissions).every(
-        (addedPermission) => !!this.state.addedPermissions[addedPermission]
-      )
+      !isEqual(nextProps.permissions, this.props.permissions) ||
+      !isEqual(nextProps.permissions, this.state.existingPermissions)
     ) {
       return true;
     }
     if (
-      !Object.values(nextState.addedRoles).every(
-        (addedRole) => !!this.state.addedRoles[addedRole]
-      )
+      !isEqual(nextProps.roles, this.props.roles) ||
+      !isEqual(nextProps.roles, this.state.existingRoles)
     ) {
       return true;
     }
 
-    if (
-      !Object.values(nextState.addedRoles).length &&
-      Object.values(this.state.addedRoles).length
-    ) {
+    if (!isEqual(nextState.blockedRoles, this.state.blockedRoles)) {
       return true;
     }
-
-    if (
-      !Object.values(nextState.blockedRoles).length &&
-      Object.values(this.state.blockedRoles).length
-    ) {
+    if (!isEqual(nextState.blockedPermissions, this.state.blockedPermissions)) {
       return true;
     }
-
-    if (
-      !Object.values(nextState.blockedPermissions).length &&
-      Object.values(this.state.blockedPermissions).length
-    ) {
+    if (!isEqual(nextState.addedPermissions, this.state.addedPermissions)) {
       return true;
     }
-
-    if (
-      !Object.values(nextState.addedPermissions).length &&
-      Object.values(this.state.addedPermissions).length
-    ) {
+    if (!isEqual(nextState.addedRoles, this.state.addedRoles)) {
       return true;
     }
 
@@ -268,6 +208,8 @@ export class RBACContextProvider extends React.Component<ProviderProps, State> {
   };
 
   render() {
+    console.log("RE-RENDER");
+
     return (
       <RBACContext.Provider
         value={{

@@ -1,12 +1,13 @@
 import serve from "rollup-plugin-serve";
 import livereload from "rollup-plugin-livereload";
+import typescript from "rollup-plugin-typescript2";
 import babel from "@rollup/plugin-babel";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import replace from "@rollup/plugin-replace";
 
 export default {
-  input: "webServer/src/index.js",
+  input: "./src/App.tsx",
   output: {
     file: "dist/bundle.js",
     format: "iife",
@@ -14,8 +15,9 @@ export default {
   },
   plugins: [
     nodeResolve({
-      extensions: [".js"],
+      extensions: [".js", ".ts", ".tsx"],
     }),
+    typescript({ useTsconfigDeclarationDir: true }),
     replace({
       preventAssignment: true,
       "process.env.NODE_ENV": JSON.stringify("development"),
@@ -27,10 +29,10 @@ export default {
     serve({
       open: true,
       verbose: true,
-      contentBase: ["", "./webServer/public"],
+      contentBase: ["", "./public"],
       host: "localhost",
       port: 3000,
     }),
-    livereload({ watch: ["dist", "build"] }),
+    livereload({ watch: ["dist"] }),
   ],
 };
