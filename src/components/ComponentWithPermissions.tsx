@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { PermissionsView } from "./PermissionsView";
 import { RBACComponent } from "../RBACComponent";
+import ComponentWithHoc from "./ComponentWithHOC";
 
 export const ComponentWithPermissions = () => {
   const [requiredPermissions, setRequiredPermissions] = useState(["get_all"]);

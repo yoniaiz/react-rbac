@@ -1,65 +1,18 @@
 import React, { createContext, useContext } from "react";
-import isEqual from "lodash.isequal";
+import {
+  RBACContextProps,
+  RBACContextState,
+  RBACProviderProps,
+} from "./RBAC.types";
+import { normalizeArr, omit, shouldUpdateRBAC } from "./RBAC.utils";
 
-interface State {
-  existingRolesNorm: Record<string, string>;
-  existingPermissionsNorm: Record<string, string>;
-  existingPermissions: string[];
-  existingRoles: string[];
-  blockedRoles: Record<string, string>;
-  addedRoles: Record<string, string>;
-  blockedPermissions: Record<string, string>;
-  addedPermissions: Record<string, string>;
-}
+export const RBACContext = createContext<RBACContextProps>(null);
 
-interface ContextProps extends State {
-  addPermissions: (added: string[]) => void;
-  blockPermissions: (blocked: string[]) => void;
-  addRoles: (added: string[]) => void;
-  blockRoles: (blocked: string[]) => void;
-  resetRoles: (blocked: string[]) => void;
-  resetPermissions: (blocked: string[]) => void;
-}
-
-export const RBACContext = createContext<ContextProps>({
-  existingRolesNorm: {},
-  existingPermissionsNorm: {},
-  existingPermissions: [],
-  existingRoles: [],
-  addedPermissions: {},
-  addedRoles: {},
-  blockedRoles: {},
-  blockedPermissions: {},
-  addPermissions: null,
-  blockPermissions: null,
-  addRoles: null,
-  blockRoles: null,
-  resetRoles: null,
-  resetPermissions: null,
-});
-
-interface ProviderProps {
-  roles: string[];
-  permissions: string[];
-  children: React.ReactNode;
-}
-
-function normalizeArr(arr) {
-  if (!arr?.length) return {};
-
-  const norm = {};
-  for (const item of arr) {
-    norm[item] = item;
-  }
-
-  return { ...norm };
-}
-
-function omit(obj: object, key: string) {
-  delete obj[key];
-}
-export class RBACContextProvider extends React.Component<ProviderProps, State> {
-  constructor(props: ProviderProps) {
+export class RBACContextProvider extends React.Component<
+  RBACProviderProps,
+  RBACContextState
+> {
+  constructor(props: RBACProviderProps) {
     super(props);
     this.state = {
       existingRolesNorm: {},
@@ -87,36 +40,10 @@ export class RBACContextProvider extends React.Component<ProviderProps, State> {
   }
 
   shouldComponentUpdate(
-    nextProps: Readonly<ProviderProps>,
-    nextState: Readonly<State>
+    nextProps: Readonly<RBACProviderProps>,
+    nextState: Readonly<RBACContextState>
   ) {
-    if (
-      !isEqual(nextProps.permissions, this.props.permissions) ||
-      !isEqual(nextProps.permissions, this.state.existingPermissions)
-    ) {
-      return true;
-    }
-    if (
-      !isEqual(nextProps.roles, this.props.roles) ||
-      !isEqual(nextProps.roles, this.state.existingRoles)
-    ) {
-      return true;
-    }
-
-    if (!isEqual(nextState.blockedRoles, this.state.blockedRoles)) {
-      return true;
-    }
-    if (!isEqual(nextState.blockedPermissions, this.state.blockedPermissions)) {
-      return true;
-    }
-    if (!isEqual(nextState.addedPermissions, this.state.addedPermissions)) {
-      return true;
-    }
-    if (!isEqual(nextState.addedRoles, this.state.addedRoles)) {
-      return true;
-    }
-
-    return false;
+    return shouldUpdateRBAC(nextProps, nextState, this.props, this.state);
   }
 
   componentDidUpdate(): void {
@@ -207,25 +134,28 @@ export class RBACContextProvider extends React.Component<ProviderProps, State> {
     }));
   };
 
-  render() {
-    console.log("RE-RENDER");
+  resetAll = () => {
+    this.resetPermissions();
+    this.resetRoles();
+  };
 
+  render() {
+    const sharedState: RBACContextProps = {
+      ...this.state,
+      blockPermissions: this.blockPermissions,
+      addPermissions: this.addPermissions,
+      blockRoles: this.blockRoles,
+      addRoles: this.addRoles,
+      resetRoles: this.resetRoles,
+      resetPermissions: this.resetPermissions,
+      resetAll: this.resetAll,
+    };
     return (
-      <RBACContext.Provider
-        value={{
-          ...this.state,
-          blockPermissions: this.blockPermissions,
-          addPermissions: this.addPermissions,
-          blockRoles: this.blockRoles,
-          addRoles: this.addRoles,
-          resetRoles: this.resetRoles,
-          resetPermissions: this.resetPermissions,
-        }}
-      >
-        {this.props.children}
+      <RBACContext.Provider value={sharedState}>
+        {typeof this.props.children === "function"
+          ? this.props.children(sharedState)
+          : this.props.children}
       </RBACContext.Provider>
     );
   }
 }
-
-export const useRBACContext = () => useContext(RBACContext);

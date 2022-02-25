@@ -5,6 +5,7 @@ import { ComponentWithRoles } from "./components/ComponentWithRoles";
 import { RBACContextProvider } from "./RBACContext";
 import { ComponentWithPermissions } from "./components/ComponentWithPermissions";
 import { useRBACContext } from ".";
+import ComponentWithHOC from "./components/ComponentWithHOC";
 
 const RolesAndPermissionsInContext = () => {
   const helper = (title, obj) => {
@@ -76,11 +77,41 @@ const App = () => {
         />
       </div>
       <RBACContextProvider roles={roles} permissions={permissions}>
-        <div>
-          <ComponentWithRoles />
-          <ComponentWithPermissions />
-          <RolesAndPermissionsInContext />
-        </div>
+        {({ addRoles, addPermissions, addedRoles, addedPermissions }) => {
+          return (
+            <>
+              <div>
+                <h2>hooks</h2>
+                <div>
+                  <button
+                    onClick={() =>
+                      addRoles([`role-${Object.keys(addedRoles).length + 1}`])
+                    }
+                  >
+                    add roles
+                  </button>
+                  <button
+                    onClick={() =>
+                      addPermissions([
+                        `permissions-${
+                          Object.keys(addedPermissions).length + 1
+                        }`,
+                      ])
+                    }
+                  >
+                    add permissions
+                  </button>
+                </div>
+              </div>
+              <div>
+                <ComponentWithRoles />
+                <ComponentWithPermissions />
+                <RolesAndPermissionsInContext />
+                <ComponentWithHOC />
+              </div>
+            </>
+          );
+        }}
       </RBACContextProvider>
     </div>
   );

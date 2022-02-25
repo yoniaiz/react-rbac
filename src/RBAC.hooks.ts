@@ -1,5 +1,6 @@
+import { useContext } from "react";
 import { checkIfRBACValid } from "./RBAC.utils";
-import { useRBACContext } from "./RBACContext";
+import { RBACContext } from "./RBACContext";
 
 export const useRBACComponentPermissions = (
   requiredRoles: string[],
@@ -49,4 +50,14 @@ export const useHasPermissions = (permissions: string[]) => {
     added: !!addedPermissions[permission],
     blocked: !!blockedPermissions[permission],
   }));
+};
+
+export const useRBACContext = () => {
+  const context = useContext(RBACContext);
+
+  if (!context) {
+    throw new Error("Please connect RBAC context");
+  }
+
+  return context;
 };

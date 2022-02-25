@@ -32,7 +32,7 @@ export const PermissionsView = ({
       <ul>
         {permissions.map((permission) => (
           <li style={{ width: "150px", marginTop: "12px" }} key={permission}>
-            {permission}{" "}
+            {permission}
             <button
               style={{ float: "right" }}
               onClick={() => removePermission(permission)}
