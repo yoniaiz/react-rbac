@@ -33,7 +33,8 @@
     "format:fix": "npm run prettier -- --write",
     "lint": "eslint --ext .tsx,.ts .",
     "type:check": "tsc",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "pre-push": "npm run type:check"
   },
   "keywords": [],
   "author": "",
