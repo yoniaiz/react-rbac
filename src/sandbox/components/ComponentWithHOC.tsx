@@ -4,7 +4,7 @@ import { withRBAC } from '../..';
 const ComponentWithHOC = () => {
   return (
     <div>
-      <h2>HOC</h2>test
+      <h2>HOC</h2>
     </div>
   );
 };

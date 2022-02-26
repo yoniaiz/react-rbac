@@ -3,22 +3,14 @@ import { RBACContextProps } from './RBAC.types';
 import { checkIfRBACValid } from './RBAC.utils';
 import { RBACContext } from './RBACContext';
 
-export const useRBACComponentPermissions = <
-  R extends string = string,
-  P extends string = string
->(
+export const useHasRoles = <R extends string = string>(
   requiredRoles: R[],
-  requiredPermissions: P[],
-  oneOf?: boolean
+  oneOf = false
 ) => {
-  const {
-    existingRolesNorm,
-    existingPermissionsNorm,
-    addedPermissions,
-    addedRoles,
-    blockedRoles,
-    blockedPermissions,
-  } = useRBACContext<R, P>();
+  const { existingRolesNorm, addedRoles, blockedRoles } = useRBACContext<
+    R,
+    string
+  >();
 
   const hasRequiredRoles = checkIfRBACValid<R>({
     required: requiredRoles,
@@ -28,6 +20,16 @@ export const useRBACComponentPermissions = <
     oneOf,
   });
 
+  return hasRequiredRoles;
+};
+
+export const useHasPermissions = <P extends string = string>(
+  requiredPermissions: P[],
+  oneOf = false
+) => {
+  const { existingPermissionsNorm, addedPermissions, blockedPermissions } =
+    useRBACContext<string, P>();
+
   const hasRequiredPermissions = checkIfRBACValid<P>({
     required: requiredPermissions,
     existing: existingPermissionsNorm,
@@ -35,10 +37,10 @@ export const useRBACComponentPermissions = <
     blocked: blockedPermissions,
     oneOf,
   });
-  return { hasRequiredRoles, hasRequiredPermissions };
+  return hasRequiredPermissions;
 };
 
-export const useHasRoles = <
+export const useGetRolesState = <
   R extends string = string,
   P extends string = string
 >(
@@ -56,7 +58,7 @@ export const useHasRoles = <
   }));
 };
 
-export const useHasPermissions = <
+export const useGetPermissionsState = <
   R extends string = string,
   P extends string = string
 >(

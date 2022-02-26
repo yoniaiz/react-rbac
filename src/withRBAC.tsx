@@ -1,5 +1,5 @@
 import React from 'react';
-import { RBACComponent } from './RBACComponent';
+import { RBACWrapper } from './RBACWrapper';
 import { RBACComponentProps } from './RBAC.types';
 
 export function withRBAC<
@@ -12,9 +12,9 @@ export function withRBAC<
 ) {
   const ComponentWithRBAC = (props: T) => {
     return (
-      <RBACComponent<R, P> {...rbacProps}>
+      <RBACWrapper<R, P> {...rbacProps}>
         <WrappedComponent {...props} />
-      </RBACComponent>
+      </RBACWrapper>
     );
   };
   return ComponentWithRBAC;

@@ -1,17 +1,15 @@
 import React from 'react';
 import { renderHook, act } from '@testing-library/react-hooks';
 import * as hooks from '../RBAC.hooks';
-import { RBACContextProvider } from '../RBACContext';
+import { RBACProvider } from '../RBACContext';
 
 describe('RBAC hooks', () => {
-  describe('useHasRoles', () => {
+  describe('useGetRolesState', () => {
     it('Should check if has roles', () => {
-      const { result } = renderHook((props) => hooks.useHasRoles(props), {
+      const { result } = renderHook((props) => hooks.useGetRolesState(props), {
         initialProps: ['admin'],
         wrapper: ({ children }) => (
-          <RBACContextProvider roles={['admin']}>
-            {children}
-          </RBACContextProvider>
+          <RBACProvider roles={['admin']}>{children}</RBACProvider>
         ),
       });
 
@@ -30,16 +28,17 @@ Array [
     });
   });
 
-  describe('useHasPermissions', () => {
+  describe('useGetPermissionsState', () => {
     it('Should check if has permissions', () => {
-      const { result } = renderHook((props) => hooks.useHasPermissions(props), {
-        initialProps: ['add_credit'],
-        wrapper: ({ children }) => (
-          <RBACContextProvider permissions={['add_credit']}>
-            {children}
-          </RBACContextProvider>
-        ),
-      });
+      const { result } = renderHook(
+        (props) => hooks.useGetPermissionsState(props),
+        {
+          initialProps: ['add_credit'],
+          wrapper: ({ children }) => (
+            <RBACProvider permissions={['add_credit']}>{children}</RBACProvider>
+          ),
+        }
+      );
 
       act(() => {
         expect(result.current).toHaveLength(1);
@@ -61,9 +60,7 @@ Array [
       const { result } = renderHook(hooks.useRBACContext, {
         initialProps: { permissions: ['add_credit'] },
         wrapper: ({ children, permissions }) => (
-          <RBACContextProvider permissions={permissions}>
-            {children}
-          </RBACContextProvider>
+          <RBACProvider permissions={permissions}>{children}</RBACProvider>
         ),
       });
 
@@ -98,9 +95,7 @@ Array [
       const { result } = renderHook(hooks.useRBACContext, {
         initialProps: { permissions: ['add_credit'] },
         wrapper: ({ children, permissions }) => (
-          <RBACContextProvider permissions={permissions}>
-            {children}
-          </RBACContextProvider>
+          <RBACProvider permissions={permissions}>{children}</RBACProvider>
         ),
       });
 
@@ -135,9 +130,7 @@ Array [
       const { result } = renderHook(hooks.useRBACContext, {
         initialProps: { permissions: ['add_credit'] },
         wrapper: ({ children, permissions }) => (
-          <RBACContextProvider permissions={permissions}>
-            {children}
-          </RBACContextProvider>
+          <RBACProvider permissions={permissions}>{children}</RBACProvider>
         ),
       });
 

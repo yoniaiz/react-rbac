@@ -1,21 +1,21 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { RBACContextProvider } from '..';
+import { RBACProvider } from '..';
 import ComponentWithHOC from '../sandbox/components/ComponentWithHOC';
 
 describe('withRBAC', () => {
   it('Should display component when permissions valid', () => {
     render(
-      <RBACContextProvider permissions={['delete_all']}>
+      <RBACProvider permissions={['delete_all']}>
         <ComponentWithHOC />
-      </RBACContextProvider>
+      </RBACProvider>
     );
   });
   it('Should hide component when permissions not valid', () => {
     render(
-      <RBACContextProvider permissions={[]}>
+      <RBACProvider permissions={[]}>
         <ComponentWithHOC />
-      </RBACContextProvider>
+      </RBACProvider>
     );
   });
 });

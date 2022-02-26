@@ -1,9 +1,9 @@
 import React, { cloneElement } from 'react';
 import { BLOCKED_CLASS_NAME } from './RBAC.constants';
-import { useRBACComponentPermissions } from './RBAC.hooks';
+import { useHasPermissions, useHasRoles } from './RBAC.hooks';
 import { RBACComponentProps } from './RBAC.types';
 
-export const RBACComponent = <
+export const RBACWrapper = <
   R extends string = string,
   P extends string = string
 >({
@@ -13,10 +13,10 @@ export const RBACComponent = <
   fallback,
   blockedComponentPropsOverride = {},
   hideWhenBlocked = true,
-  oneOf,
+  oneOf = false,
 }: RBACComponentProps<R, P>): JSX.Element => {
-  const { hasRequiredRoles, hasRequiredPermissions } =
-    useRBACComponentPermissions(requiredRoles, requiredPermissions, oneOf);
+  const hasRequiredRoles = useHasRoles(requiredRoles, oneOf);
+  const hasRequiredPermissions = useHasPermissions(requiredPermissions, oneOf);
 
   if (typeof children === 'function') {
     return children({ hasRequiredPermissions, hasRequiredRoles });

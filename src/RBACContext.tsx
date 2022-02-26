@@ -8,7 +8,7 @@ import { normalizeArr, omit, shouldUpdateRBAC } from './RBAC.utils';
 
 export const RBACContext = createContext<RBACContextProps>(null);
 
-export class RBACContextProvider<
+export class RBACProvider<
   R extends string = string,
   P extends string = string
 > extends React.Component<RBACProviderProps<R, P>, RBACContextState<R, P>> {

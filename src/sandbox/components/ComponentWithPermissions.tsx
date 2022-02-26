@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { PermissionsView } from './PermissionsView';
-import { RBACComponent } from '../../RBACComponent';
+import { RBACWrapper } from '../../RBACWrapper';
 import { RBAC } from '../RBAC';
 
 export const ComponentWithPermissions = () => {
   const [requiredPermissions, setRequiredPermissions] = useState(['get_all']);
+  const a = RBAC.useHasRoles(['admin']);
   return (
     <div>
       <h2>RBAC Component</h2>
-      <RBAC.Component requiredRoles={['owner', 'admin']} oneOf>
+      <RBAC.Wrapper requiredRoles={['owner', 'admin']} oneOf>
         <div>ADMIN</div>
-      </RBAC.Component>
+      </RBAC.Wrapper>
       <PermissionsView
         addPermission={(value) =>
           setRequiredPermissions((prev) => [...prev, value])
@@ -21,7 +22,7 @@ export const ComponentWithPermissions = () => {
         permissions={requiredPermissions}
         label="Required Permieeions for component"
       />
-      <RBACComponent
+      <RBACWrapper
         requiredPermissions={requiredPermissions}
         blockedComponentPropsOverride={{ style: { background: 'green' } }}
       >
@@ -30,7 +31,7 @@ export const ComponentWithPermissions = () => {
             hi
           </div>
         </>
-      </RBACComponent>
+      </RBACWrapper>
     </div>
   );
 };
