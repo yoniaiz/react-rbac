@@ -5,7 +5,7 @@ import { RBAC } from '../RBAC';
 
 export const ComponentWithPermissions = () => {
   const [requiredPermissions, setRequiredPermissions] = useState(['get_all']);
-  const a = RBAC.useHasRoles(['admin']);
+
   return (
     <div>
       <h2>RBAC Component</h2>
