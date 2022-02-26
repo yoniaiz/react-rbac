@@ -46,17 +46,17 @@ return <h2>only user with certain permissions can see me!</h2>;
 
 const App = () => {
 return (
-<RBACProvider roles={roles} permissions={permissions}>
-  {/* Will be visible */}
-  <RBACWrapper requiredPermissions={['get_all_credits']}>
-    <Component />
-  </RBACWrapper>
-  {/* Will be hidden */}
-  <RBACWrapper requiredPermissions={['permission_that_not_exists']}>
-    <Component />
-  </RBACWrapper>
-</RBACProvider>
-);
+  <RBACProvider roles={roles} permissions={permissions}>
+    {/* Will be visible */}
+    <RBACWrapper requiredPermissions={['get_all_credits']}>
+      <Component />
+    </RBACWrapper>
+    {/* Will be hidden */}
+    <RBACWrapper requiredPermissions={['permission_that_not_exists']}>
+      <Component />
+    </RBACWrapper>
+  </RBACProvider>
+  );
 };
 ```
 
@@ -129,8 +129,8 @@ for example
 ```javascript
 const existingPermissions = ['get_all_credits', 'delete_all_credits'];
 const existingPermissionsNorm = {
-get_all_credits: 'get_all_credits',
-delete_all_credits: 'delete_all_credits',
+  get_all_credits: 'get_all_credits',
+  delete_all_credits: 'delete_all_credits',
 };
 ```
 
@@ -275,13 +275,13 @@ example:
 ```JSX
 <RBACWrapper requiredPermissions={['get_all_credits']}>
   {({ hasRequiredRoles, hasRequiredPermissions }) => {
-  if (!hasRequiredRoles) {
-  return <div>You dont have the required roles :[</div>;
-  }
-  if (!hasRequiredPermissions) {
-  return <div>You dont have the required permissions :[</div>;
-  }
-  return <div>hi</div>;
+    if (!hasRequiredRoles) {
+      return <div>You dont have the required roles :[</div>;
+    }
+    if (!hasRequiredPermissions) {
+      return <div>You dont have the required permissions :[</div>;
+    }
+    return <div>hi</div>;
   }}
 </RBACWrapper>
 ```
@@ -306,8 +306,7 @@ In case the permission is blocked and you want to return other element instead o
 example:
 
 ```JSX
-<RBACWrapper requiredPermissions={['get_all_credits']} fallback={<div>Very sad</div>}
-  >
+<RBACWrapper requiredPermissions={['get_all_credits']} fallback={<div>Very sad</div>}>
   <div>So happy!</div>
 </RBACWrapper>
 ```
@@ -325,19 +324,25 @@ Will override the props passed to the component
 example:
 
 ```JSX
-<RBACWrapper requiredPermissions={['get_all_credits']} hideWhenBlocked={false} blockedComponentPropsOverride={{
-		style: { color:  'red' },
-		onClick: () => {
-			console.log('IM BLOCKED :(');
-		},
-	}}>
-  <button type="button" onClick={()=> {
-    console.log('HELLO');
+<RBACWrapper
+  requiredPermissions={['get_all_credits']}
+  hideWhenBlocked={false}
+  blockedComponentPropsOverride={{
+    style: { color: 'red' },
+    onClick: () => {
+      console.log('IM BLOCKED :(');
+    },
+  }}
+>
+  <button
+    type="button"
+    onClick={() => {
+      console.log('HELLO');
     }}
-    >
+  >
     click
   </button>
-</RBACWrapper>
+</RBACWrapper>;
 ```
 
 Note that if you pass a Component as children and blockedComponentPropsOverride
@@ -345,11 +350,11 @@ will have props inside that are not part of the props of the component you will 
 
 ```JSX
 const Button = ({ onClick, children, ...propsFromRBACOverride }) => {
-return (
-<button type="button" onClick={onClick} {...propsFromRBACOverride}>
-  {children}
-</button>
-);
+  return (
+    <button type="button" onClick={onClick} {...propsFromRBACOverride}>
+      {children}
+    </button>
+  );
 };
 ```
 
@@ -364,13 +369,13 @@ example:
 
 ```JSX
 const App = () => {
-return (
-<RBACProvider roles={['admin']}>
-  <RBACWrapper requiredPermissions={['admin', 'owner' ]} oneOf>
-    <div>Admin or owner can see me</div>
-  </RBACWrapper>
-</RBACProvider>
-);
+  return (
+    <RBACProvider roles={['admin']}>
+      <RBACWrapper requiredPermissions={['admin', 'owner' ]} oneOf>
+        <div>Admin or owner can see me</div>
+      </RBACWrapper>
+    </RBACProvider>
+  );
 };
 ```
 
@@ -386,15 +391,15 @@ example
 
 ```JSX
 const ComponentWithHOC = () => {
-return (
-<div>
-  <h2>HOC</h2>test
-</div>
-);
+  return (
+    <div>
+      <h2>HOC</h2>test
+    </div>
+  );
 };
 
 export default withRBAC(ComponentWithHOC, {
-requiredPermissions: ['delete_all'],
+  requiredPermissions: ['delete_all'],
 });
 ```
 
@@ -419,11 +424,11 @@ usage:
 
 ```JSX
 const Component = () => {
-const hasRequiredRoles = useHasRoles(['admin']);
-if(hasRequiredRoles){
-return <div>hello!</div>
-}
-return </div>
+  const hasRequiredRoles = useHasRoles(['admin']);
+  if(hasRequiredRoles){
+    return <div>hello!</div>
+  }
+  return </div>
 };
 ```
 
@@ -441,11 +446,11 @@ usage:
 
 ```JSX
 const Component = () => {
-const hasRequiredPermission = useHasPermissions(['get_all_credits','delete_all_credits']);
-if(hasRequiredPermission){
-return <div>hello!</div>
-}
-return </div>
+  const hasRequiredPermission = useHasPermissions(['get_all_credits','delete_all_credits']);
+  if(hasRequiredPermission){
+    return <div>hello!</div>
+  }
+  return </div>
 };
 ```
 
@@ -503,23 +508,23 @@ export type Permissions = 'get_all' | 'allow_auth';
 export const { RBAC } = RBACFactory<Roles, Permissions>();
 
   // in App.tsx
-  const App = () => {
+const App = () => {
   return (
-  <RBAC.Provider roles={['admin']}>
-    <Component />
-  </RBAC.Provider>
+    <RBAC.Provider roles={['admin']}>
+      <Component />
+    </RBAC.Provider>
   )
-  }
+}
 
   // in Component.tsx
-  const Component = () => {
+const Component = () => {
   const hasRequiredRoles = RBAC.useHasRoles(['admin']);
   return (
-  <RBAC.Wrapper requiredRoles={['admin']}>
-    <div>test</div>
-  </RBAC.Wrapper />
+    <RBAC.Wrapper requiredRoles={['admin']}>
+      <div>test</div>
+    </RBAC.Wrapper />
   )
-  }
+}
   ```
 
   ## LICENSE
