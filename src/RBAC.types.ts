@@ -3,12 +3,18 @@ export interface ChildrenProps {
   hasRequiredRoles: boolean;
 }
 
-export interface RequiredRBAC {
-  requiredRoles?: string[];
-  requiredPermissions?: string[];
+export interface RequiredRBAC<
+  R extends string = string,
+  P extends string = string
+> {
+  requiredRoles?: R[];
+  requiredPermissions?: P[];
 }
 
-export interface RBACComponentProps extends RequiredRBAC {
+export interface RBACComponentProps<
+  R extends string = string,
+  P extends string = string
+> extends RequiredRBAC<R, P> {
   children:
     | React.ReactElement
     | (({
@@ -18,20 +24,27 @@ export interface RBACComponentProps extends RequiredRBAC {
   fallback?: React.ReactNode;
   blockedComponentPropsOverride?: Record<string, unknown>;
   hideWhenBlocked?: boolean;
+  oneOf?: boolean;
 }
 
-export interface RBACContextState {
-  existingRolesNorm: Record<string, string>;
-  existingPermissionsNorm: Record<string, string>;
-  existingPermissions: string[];
-  existingRoles: string[];
+export interface RBACContextState<
+  R extends string = string,
+  P extends string = string
+> {
+  existingRolesNorm: Record<R, R>;
+  existingPermissionsNorm: Record<P, P>;
+  existingPermissions: P[];
+  existingRoles: R[];
   blockedRoles: Record<string, string>;
   addedRoles: Record<string, string>;
   blockedPermissions: Record<string, string>;
   addedPermissions: Record<string, string>;
 }
 
-export interface RBACContextProps extends RBACContextState {
+export interface RBACContextProps<
+  R extends string = string,
+  P extends string = string
+> extends RBACContextState<R, P> {
   addPermissions: (added: string[]) => void;
   blockPermissions: (blocked: string[]) => void;
   addRoles: (added: string[]) => void;
@@ -41,8 +54,10 @@ export interface RBACContextProps extends RBACContextState {
   resetAll: () => void;
 }
 
-export interface RBACProviderProps {
-  roles?: string[];
-  permissions?: string[];
-  children: ((props: RBACContextProps) => React.ReactNode) | React.ReactNode;
+export interface RBACProviderProps<R extends string, P extends string> {
+  roles?: R[];
+  permissions?: P[];
+  children:
+    | ((props: RBACContextProps<R, P>) => React.ReactNode)
+    | React.ReactNode;
 }

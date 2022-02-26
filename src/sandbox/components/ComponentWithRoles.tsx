@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { PermissionsView } from "./PermissionsView";
-import { RBACComponent } from "../RBACComponent";
+import { RBACComponent } from "../../RBACComponent";
 
 export const ComponentWithRoles = () => {
   const [requiredRoles, setRequiredRoles] = useState(["admin"]);

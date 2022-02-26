@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext } from "react";
 import {
   RBACContextProps,
   RBACContextState,
@@ -8,15 +8,15 @@ import { normalizeArr, omit, shouldUpdateRBAC } from "./RBAC.utils";
 
 export const RBACContext = createContext<RBACContextProps>(null);
 
-export class RBACContextProvider extends React.Component<
-  RBACProviderProps,
-  RBACContextState
-> {
-  constructor(props: RBACProviderProps) {
+export class RBACContextProvider<
+  R extends string = string,
+  P extends string = string
+> extends React.Component<RBACProviderProps<R, P>, RBACContextState<R, P>> {
+  constructor(props: RBACProviderProps<R, P>) {
     super(props);
     this.state = {
-      existingRolesNorm: {},
-      existingPermissionsNorm: {},
+      existingRolesNorm: {} as Record<R, R>,
+      existingPermissionsNorm: {} as Record<P, P>,
       existingPermissions: [],
       existingRoles: [],
       blockedRoles: {},
@@ -26,7 +26,7 @@ export class RBACContextProvider extends React.Component<
     };
   }
 
-  updateState = (permissions: string[], roles: string[]) => {
+  updateState = (permissions: P[], roles: R[]) => {
     this.setState((prev) => ({
       ...prev,
       existingPermissions: permissions,
@@ -40,7 +40,7 @@ export class RBACContextProvider extends React.Component<
   }
 
   shouldComponentUpdate(
-    nextProps: Readonly<RBACProviderProps>,
+    nextProps: Readonly<RBACProviderProps<R, P>>,
     nextState: Readonly<RBACContextState>
   ) {
     return shouldUpdateRBAC(nextProps, nextState, this.props, this.state);
@@ -140,7 +140,7 @@ export class RBACContextProvider extends React.Component<
   };
 
   render() {
-    const sharedState: RBACContextProps = {
+    const sharedState: RBACContextProps<R, P> = {
       ...this.state,
       blockPermissions: this.blockPermissions,
       addPermissions: this.addPermissions,

@@ -1,5 +1,5 @@
 import React from "react";
-import { withRBAC } from "..";
+import { withRBAC } from "../..";
 
 const ComponentWithHOC = () => {
   return (

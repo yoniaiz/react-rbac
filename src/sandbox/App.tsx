@@ -2,10 +2,16 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { PermissionsView } from "./components/PermissionsView";
 import { ComponentWithRoles } from "./components/ComponentWithRoles";
-import { RBACContextProvider } from "./RBACContext";
+import { RBACContextProvider } from "../RBACContext";
 import { ComponentWithPermissions } from "./components/ComponentWithPermissions";
-import { useRBACContext } from ".";
+import { useRBACContext } from "..";
 import ComponentWithHOC from "./components/ComponentWithHOC";
+import { RBACFactory } from "../RBACFactory";
+
+export type Roles = "admin" | "owner";
+export type Permissions = "get_all" | "allow_auth";
+
+export const { RBAC } = RBACFactory<Roles, Permissions>();
 
 const RolesAndPermissionsInContext = () => {
   const helper = (title, obj) => {
@@ -41,11 +47,8 @@ const RolesAndPermissionsInContext = () => {
 };
 
 const App = () => {
-  const [roles, setRoles] = useState<string[]>(["admin"]);
-  const [permissions, setPermissions] = useState<string[]>([
-    "get_all",
-    "delete_all",
-  ]);
+  const [roles, setRoles] = useState<Roles[]>(["admin"]);
+  const [permissions, setPermissions] = useState<Permissions[]>(["allow_auth"]);
 
   return (
     <div
@@ -76,12 +79,21 @@ const App = () => {
           label="Permissions"
         />
       </div>
-      <RBACContextProvider roles={roles} permissions={permissions}>
+      <RBAC.Provider roles={roles} permissions={permissions}>
         {({ addRoles, addPermissions, addedRoles, addedPermissions }) => {
           return (
             <>
               <div>
                 <h2>hooks</h2>
+                <RBAC.Component
+                  requiredRoles={["admin"]}
+                  requiredPermissions={["get_all"]}
+                >
+                  <div>hi</div>
+                </RBAC.Component>
+                <RBAC.Component requiredRoles={["admin"]}>
+                  <div>hi</div>
+                </RBAC.Component>
                 <div>
                   <button
                     onClick={() =>
@@ -112,7 +124,7 @@ const App = () => {
             </>
           );
         }}
-      </RBACContextProvider>
+      </RBAC.Provider>
     </div>
   );
 };

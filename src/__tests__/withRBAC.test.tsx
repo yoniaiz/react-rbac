@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { RBACContextProvider } from "..";
-import ComponentWithHOC from "../components/ComponentWithHOC";
+import ComponentWithHOC from "../sandbox/components/ComponentWithHOC";
 
 describe("withRBAC", () => {
   it("Should display component when permissions valid", () => {

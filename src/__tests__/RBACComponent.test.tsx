@@ -49,7 +49,7 @@ describe("RBAC Component", () => {
       </RBACContextProvider>
     );
 
-    expect(screen.queryByText("test")).not.toBeInTheDocument();
+    expect(screen.queryByText("test")).toBeNull();
   });
 
   it("Should hide component when permissions not valid", () => {
@@ -63,7 +63,7 @@ describe("RBAC Component", () => {
       </RBACContextProvider>
     );
 
-    expect(screen.queryByText("test")).not.toBeInTheDocument();
+    expect(screen.queryByText("test")).toBeNull();
   });
 
   it("Should replace component", () => {
@@ -78,7 +78,7 @@ describe("RBAC Component", () => {
       </RBACContextProvider>
     );
 
-    expect(screen.queryByText("fallback")).toBeInTheDocument();
+    expect(screen.getByText("fallback")).toBeInTheDocument();
   });
 
   it("Should change styled to blocked component", () => {
@@ -94,7 +94,7 @@ describe("RBAC Component", () => {
       </RBACContextProvider>
     );
 
-    expect(screen.queryByText("test")).toHaveStyle({ color: "green" });
+    expect(screen.getByText("test")).toHaveStyle({ color: "green" });
   });
 
   it("Children should be able to receive state", () => {
@@ -110,6 +110,95 @@ describe("RBAC Component", () => {
       </RBACContextProvider>
     );
 
-    expect(screen.queryByText("blocked")).toBeInTheDocument();
+    expect(screen.getByText("blocked")).toBeInTheDocument();
+  });
+
+  it("Should display component when oneOf roles satisfied", () => {
+    render(
+      <RBACContextProvider roles={["guest"]}>
+        <RBACComponent requiredRoles={["admin", "guest"]} oneOf>
+          <div>test</div>
+        </RBACComponent>
+      </RBACContextProvider>
+    );
+
+    expect(screen.getByText("test")).toBeInTheDocument();
+  });
+
+  it("Should display component when oneOf permissions satisfied", () => {
+    render(
+      <RBACContextProvider permissions={["get_all"]}>
+        <RBACComponent requiredPermissions={["delete_all", "get_all"]} oneOf>
+          <div>test</div>
+        </RBACComponent>
+      </RBACContextProvider>
+    );
+
+    expect(screen.getByText("test")).toBeInTheDocument();
+  });
+
+  it("On of for roles + permissions", () => {
+    render(
+      <RBACContextProvider permissions={["get_all"]} roles={["admin"]}>
+        <RBACComponent
+          requiredPermissions={["delete_all", "get_all"]}
+          requiredRoles={["owner", "admin"]}
+          oneOf
+        >
+          <div>test</div>
+        </RBACComponent>
+      </RBACContextProvider>
+    );
+
+    expect(screen.getByText("test")).toBeInTheDocument();
+  });
+
+  it("Has permissions but don't have roles ", () => {
+    render(
+      <RBACContextProvider permissions={["get_all"]} roles={["admin"]}>
+        <RBACComponent
+          requiredPermissions={["delete_all", "get_all"]}
+          requiredRoles={["owner"]}
+          oneOf
+        >
+          <div>test</div>
+        </RBACComponent>
+      </RBACContextProvider>
+    );
+
+    expect(screen.queryByText("test")).toBeNull();
+  });
+  it("Has roles but don't have permissions ", () => {
+    render(
+      <RBACContextProvider permissions={["get_all"]} roles={["admin"]}>
+        <RBACComponent
+          requiredPermissions={["delete_all"]}
+          requiredRoles={["admin"]}
+          oneOf
+        >
+          <div>test</div>
+        </RBACComponent>
+      </RBACContextProvider>
+    );
+
+    expect(screen.queryByText("test")).toBeNull();
+  });
+
+  it("Required permissions on roles ", () => {
+    render(
+      <RBACContextProvider
+        permissions={["delete_all", "get_all"]}
+        roles={["admin", "owner"]}
+      >
+        <RBACComponent
+          requiredPermissions={["delete_all", "get_all"]}
+          requiredRoles={["admin", "owner"]}
+        >
+          <div>test</div>
+        </RBACComponent>
+      </RBACContextProvider>
+    );
+
+    expect(screen.getByText("test")).toBeInTheDocument();
   });
 });

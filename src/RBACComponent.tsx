@@ -3,16 +3,20 @@ import { BLOCKED_CLASS_NAME } from "./RBAC.constants";
 import { useRBACComponentPermissions } from "./RBAC.hooks";
 import { RBACComponentProps } from "./RBAC.types";
 
-export const RBACComponent = ({
+export const RBACComponent = <
+  R extends string = string,
+  P extends string = string
+>({
   requiredRoles,
   requiredPermissions,
   children,
   fallback,
   blockedComponentPropsOverride = {},
   hideWhenBlocked = true,
-}: RBACComponentProps): JSX.Element => {
+  oneOf,
+}: RBACComponentProps<R, P>): JSX.Element => {
   const { hasRequiredRoles, hasRequiredPermissions } =
-    useRBACComponentPermissions(requiredRoles, requiredPermissions);
+    useRBACComponentPermissions(requiredRoles, requiredPermissions, oneOf);
 
   if (typeof children === "function") {
     return children({ hasRequiredPermissions, hasRequiredRoles });

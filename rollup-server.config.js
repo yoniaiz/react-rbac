@@ -7,7 +7,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import replace from "@rollup/plugin-replace";
 
 export default {
-  input: "./src/App.tsx",
+  input: "./src/sandbox/App.tsx",
   output: {
     file: "dist/bundle.js",
     format: "iife",
