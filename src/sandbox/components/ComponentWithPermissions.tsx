@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PermissionsView } from './PermissionsView';
 import { RBACComponent } from '../../RBACComponent';
-import { RBAC } from '../App';
+import { RBAC } from '../RBAC';
 
 export const ComponentWithPermissions = () => {
   const [requiredPermissions, setRequiredPermissions] = useState(['get_all']);
