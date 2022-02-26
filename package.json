@@ -1,10 +1,17 @@
 {
-  "name": "react-rbac",
+  "name": "react-simple-rbac",
   "version": "1.0.0",
-  "description": "",
+  "description": "React app RBAC solution",
   "main": "build/index.js",
   "module": "build/index.es.js",
   "types": "build/src",
+  "keywords": [
+    "react",
+    "rbac",
+    "role based access control",
+    "security",
+    "typescript"
+  ],
   "lint-staged": {
     "src/**/*.+(ts|tsx|js|jsx)": [
       "eslint"
@@ -30,9 +37,12 @@
     "prepare": "husky install",
     "lint-staged": "lint-staged"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "yoniaiz",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yoniaiz/react-rbac"
+  },
   "peerDependencies": {
     "react": "^17.0.2"
   },
