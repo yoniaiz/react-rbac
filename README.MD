@@ -45,17 +45,17 @@ return <h2>only user with certain permissions can see me!</h2>;
 };
 
 const App = () => {
-return (
-  <RBACProvider roles={roles} permissions={permissions}>
-    {/* Will be visible */}
-    <RBACWrapper requiredPermissions={['get_all_credits']}>
-      <Component />
-    </RBACWrapper>
-    {/* Will be hidden */}
-    <RBACWrapper requiredPermissions={['permission_that_not_exists']}>
-      <Component />
-    </RBACWrapper>
-  </RBACProvider>
+  return (
+    <RBACProvider roles={roles} permissions={permissions}>
+      {/* Will be visible */}
+      <RBACWrapper requiredPermissions={['get_all_credits']}>
+        <Component />
+      </RBACWrapper>
+      {/* Will be hidden */}
+      <RBACWrapper requiredPermissions={['permission_that_not_exists']}>
+        <Component />
+      </RBACWrapper>
+    </RBACProvider>
   );
 };
 ```
