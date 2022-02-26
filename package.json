@@ -5,12 +5,6 @@
   "main": "build/index.js",
   "module": "build/index.es.js",
   "types": "build/src",
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "tsc"
-    }
-  },
   "lint-staged": {
     "src/**/*.+(ts|tsx|js|jsx)": [
       "eslint"
@@ -34,7 +28,7 @@
     "lint": "eslint --ext .tsx,.ts .",
     "type:check": "tsc",
     "prepare": "husky install",
-    "pre-push": "npm run type:check"
+    "lint-staged": "lint-staged"
   },
   "keywords": [],
   "author": "",

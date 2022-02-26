@@ -12,8 +12,8 @@ export const RBACComponent = <
   children,
   fallback,
   blockedComponentPropsOverride = {},
-  oneOf,
   hideWhenBlocked = true,
+  oneOf,
 }: RBACComponentProps<R, P>): JSX.Element => {
   const { hasRequiredRoles, hasRequiredPermissions } =
     useRBACComponentPermissions(requiredRoles, requiredPermissions, oneOf);
