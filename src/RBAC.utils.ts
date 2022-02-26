@@ -1,5 +1,5 @@
-import isEqual from "lodash.isequal";
-import { RBACContextState, RBACProviderProps } from "./RBAC.types";
+import isEqual from 'lodash.isequal';
+import { RBACContextState, RBACProviderProps } from './RBAC.types';
 
 interface CheckIfValidArgs<R extends string = string> {
   required: R[];
@@ -20,10 +20,14 @@ export function checkIfRBACValid<R extends string = string>({
   }
 
   if (oneOf) {
-    return required.some((r) => !blocked[r] && (!!existing[r] || !!added[r]));
+    return required.some(
+      (r) => !blocked[`${r}`] && (!!existing[`${r}` as R] || !!added[`${r}`])
+    );
   }
 
-  return required.every((r) => !blocked[r] && (!!existing[r] || !!added[r]));
+  return required.every(
+    (r) => !blocked[`${r}`] && (!!existing[`${r}` as R] || !!added[`${r}`])
+  );
 }
 
 export function normalizeArr<T extends string>(arr: T[]): Record<T, T> {
@@ -31,14 +35,14 @@ export function normalizeArr<T extends string>(arr: T[]): Record<T, T> {
 
   const norm = {} as Record<T, T>;
   for (const item of arr) {
-    norm[item] = item;
+    norm[`${item}` as T] = item;
   }
 
   return { ...norm };
 }
 
 export function omit(obj: object, key: string) {
-  delete obj[key];
+  delete obj[`${key}`];
 }
 
 export function shouldUpdateRBAC<R extends string, P extends string>(

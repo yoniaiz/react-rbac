@@ -1,22 +1,21 @@
-import React, { useState } from "react";
-import ReactDOM from "react-dom";
-import { PermissionsView } from "./components/PermissionsView";
-import { ComponentWithRoles } from "./components/ComponentWithRoles";
-import { RBACContextProvider } from "../RBACContext";
-import { ComponentWithPermissions } from "./components/ComponentWithPermissions";
-import { useRBACContext } from "..";
-import ComponentWithHOC from "./components/ComponentWithHOC";
-import { RBACFactory } from "../RBACFactory";
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
+import { PermissionsView } from './components/PermissionsView';
+import { ComponentWithRoles } from './components/ComponentWithRoles';
+import { ComponentWithPermissions } from './components/ComponentWithPermissions';
+import { useRBACContext } from '..';
+import ComponentWithHOC from './components/ComponentWithHOC';
+import { RBACFactory } from '../RBACFactory';
 
-export type Roles = "admin" | "owner";
-export type Permissions = "get_all" | "allow_auth";
+export type Roles = 'admin' | 'owner';
+export type Permissions = 'get_all' | 'allow_auth';
 
 export const { RBAC } = RBACFactory<Roles, Permissions>();
 
 const RolesAndPermissionsInContext = () => {
   const helper = (title, obj) => {
     return (
-      <div style={{ margin: "8px" }}>
+      <div style={{ margin: '8px' }}>
         <p>{title}</p>
         {JSON.stringify(obj, null, 2)}
       </div>
@@ -32,38 +31,38 @@ const RolesAndPermissionsInContext = () => {
   } = useRBACContext();
   return (
     <div>
-      <div style={{ display: "flex" }}>
-        {helper("existing permissions", existingPermissions)}
-        {helper("added permissions", addedPermissions)}
-        {helper("blocked permissions", blockedPermissions)}
+      <div style={{ display: 'flex' }}>
+        {helper('existing permissions', existingPermissions)}
+        {helper('added permissions', addedPermissions)}
+        {helper('blocked permissions', blockedPermissions)}
       </div>
-      <div style={{ display: "flex" }}>
-        {helper("existing roles", existingRoles)}
-        {helper("added roles", addedRoles)}
-        {helper("blocked roles", blockedRoles)}
+      <div style={{ display: 'flex' }}>
+        {helper('existing roles', existingRoles)}
+        {helper('added roles', addedRoles)}
+        {helper('blocked roles', blockedRoles)}
       </div>
     </div>
   );
 };
 
 const App = () => {
-  const [roles, setRoles] = useState<Roles[]>(["admin"]);
-  const [permissions, setPermissions] = useState<Permissions[]>(["allow_auth"]);
+  const [roles, setRoles] = useState<Roles[]>(['admin']);
+  const [permissions, setPermissions] = useState<Permissions[]>(['allow_auth']);
 
   return (
     <div
       style={{
-        display: "flex",
-        justifyContent: "space-between",
-        width: "80vw",
-        margin: "auto",
-        minWidth: "320px",
+        display: 'flex',
+        justifyContent: 'space-between',
+        width: '80vw',
+        margin: 'auto',
+        minWidth: '320px',
       }}
     >
       <div>
         <h2>Manually set roles and permissions</h2>
         <PermissionsView
-          addPermission={(value) => setRoles((prev) => [...prev, value])}
+          addPermission={(value: Roles) => setRoles((prev) => [...prev, value])}
           removePermission={(per) =>
             setRoles((prev) => prev.filter((r) => r !== per))
           }
@@ -71,7 +70,9 @@ const App = () => {
           label="Roles"
         />
         <PermissionsView
-          addPermission={(value) => setPermissions((prev) => [...prev, value])}
+          addPermission={(value: Permissions) =>
+            setPermissions((prev) => [...prev, value])
+          }
           removePermission={(per) =>
             setPermissions((prev) => prev.filter((p) => p !== per))
           }
@@ -86,12 +87,12 @@ const App = () => {
               <div>
                 <h2>hooks</h2>
                 <RBAC.Component
-                  requiredRoles={["admin"]}
-                  requiredPermissions={["get_all"]}
+                  requiredRoles={['admin']}
+                  requiredPermissions={['get_all']}
                 >
                   <div>hi</div>
                 </RBAC.Component>
-                <RBAC.Component requiredRoles={["admin"]}>
+                <RBAC.Component requiredRoles={['admin']}>
                   <div>hi</div>
                 </RBAC.Component>
                 <div>
@@ -129,4 +130,4 @@ const App = () => {
   );
 };
 
-ReactDOM.render(<App />, document.querySelector("#root"));
+ReactDOM.render(<App />, document.querySelector('#root'));

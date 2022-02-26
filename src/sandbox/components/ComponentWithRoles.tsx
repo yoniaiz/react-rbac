@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { PermissionsView } from "./PermissionsView";
-import { RBACComponent } from "../../RBACComponent";
+import React, { useState } from 'react';
+import { PermissionsView } from './PermissionsView';
+import { RBACComponent } from '../../RBACComponent';
 
 export const ComponentWithRoles = () => {
-  const [requiredRoles, setRequiredRoles] = useState(["admin"]);
+  const [requiredRoles, setRequiredRoles] = useState(['admin']);
   return (
     <div>
       <h2>RBAC Component</h2>
@@ -17,9 +17,9 @@ export const ComponentWithRoles = () => {
       />
       <RBACComponent
         requiredRoles={requiredRoles}
-        blockedComponentPropsOverride={{ style: { background: "green" } }}
+        blockedComponentPropsOverride={{ style: { background: 'green' } }}
       >
-        <div style={{ width: "100px", height: "100px", background: "red" }}>
+        <div style={{ width: '100px', height: '100px', background: 'red' }}>
           hi
         </div>
       </RBACComponent>

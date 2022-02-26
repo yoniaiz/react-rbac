@@ -1,7 +1,7 @@
-import React, { cloneElement } from "react";
-import { BLOCKED_CLASS_NAME } from "./RBAC.constants";
-import { useRBACComponentPermissions } from "./RBAC.hooks";
-import { RBACComponentProps } from "./RBAC.types";
+import React, { cloneElement } from 'react';
+import { BLOCKED_CLASS_NAME } from './RBAC.constants';
+import { useRBACComponentPermissions } from './RBAC.hooks';
+import { RBACComponentProps } from './RBAC.types';
 
 export const RBACComponent = <
   R extends string = string,
@@ -18,7 +18,7 @@ export const RBACComponent = <
   const { hasRequiredRoles, hasRequiredPermissions } =
     useRBACComponentPermissions(requiredRoles, requiredPermissions, oneOf);
 
-  if (typeof children === "function") {
+  if (typeof children === 'function') {
     return children({ hasRequiredPermissions, hasRequiredRoles });
   }
 

@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 export const PermissionsView = ({
   permissions,
   label,
   addPermission,
   removePermission,
+}: {
+  permissions: string[];
+  label: string;
+  addPermission: (a: string) => void;
+  removePermission: (a: string) => void;
 }) => {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState('');
 
   return (
     <div>
@@ -15,10 +20,10 @@ export const PermissionsView = ({
         onSubmit={(e) => {
           e.preventDefault();
           addPermission(value);
-          setValue("");
+          setValue('');
         }}
       >
-        <label htmlFor={label} style={{ marginRight: "8px" }}>
+        <label htmlFor={label} style={{ marginRight: '8px' }}>
           Add {label}
         </label>
         <input
@@ -31,10 +36,10 @@ export const PermissionsView = ({
       </form>
       <ul>
         {permissions.map((permission) => (
-          <li style={{ width: "150px", marginTop: "12px" }} key={permission}>
+          <li style={{ width: '150px', marginTop: '12px' }} key={permission}>
             {permission}
             <button
-              style={{ float: "right" }}
+              style={{ float: 'right' }}
               onClick={() => removePermission(permission)}
             >
               x

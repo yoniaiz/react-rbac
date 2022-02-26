@@ -1,20 +1,15 @@
-import React from "react";
-import {
-  renderHook,
-  cleanup,
-  act,
-  WrapperComponent,
-} from "@testing-library/react-hooks";
-import * as hooks from "../RBAC.hooks";
-import { RBACContextProvider } from "../RBACContext";
+import React from 'react';
+import { renderHook, act } from '@testing-library/react-hooks';
+import * as hooks from '../RBAC.hooks';
+import { RBACContextProvider } from '../RBACContext';
 
-describe("RBAC hooks", () => {
-  describe("useHasRoles", () => {
-    it("Should check if has roles", () => {
+describe('RBAC hooks', () => {
+  describe('useHasRoles', () => {
+    it('Should check if has roles', () => {
       const { result } = renderHook((props) => hooks.useHasRoles(props), {
-        initialProps: ["admin"],
+        initialProps: ['admin'],
         wrapper: ({ children }) => (
-          <RBACContextProvider roles={["admin"]}>
+          <RBACContextProvider roles={['admin']}>
             {children}
           </RBACContextProvider>
         ),
@@ -35,12 +30,12 @@ Array [
     });
   });
 
-  describe("useHasPermissions", () => {
-    it("Should check if has permissions", () => {
+  describe('useHasPermissions', () => {
+    it('Should check if has permissions', () => {
       const { result } = renderHook((props) => hooks.useHasPermissions(props), {
-        initialProps: ["add_credit"],
+        initialProps: ['add_credit'],
         wrapper: ({ children }) => (
-          <RBACContextProvider permissions={["add_credit"]}>
+          <RBACContextProvider permissions={['add_credit']}>
             {children}
           </RBACContextProvider>
         ),
@@ -61,10 +56,10 @@ Array [
     });
   });
 
-  describe("Context functionality test", () => {
-    it("Should be able to modify permissions", () => {
+  describe('Context functionality test', () => {
+    it('Should be able to modify permissions', () => {
       const { result } = renderHook(hooks.useRBACContext, {
-        initialProps: { permissions: ["add_credit"] },
+        initialProps: { permissions: ['add_credit'] },
         wrapper: ({ children, permissions }) => (
           <RBACContextProvider permissions={permissions}>
             {children}
@@ -73,35 +68,35 @@ Array [
       });
 
       act(() => {
-        result.current.addPermissions(["something"]);
+        result.current.addPermissions(['something']);
       });
 
       expect(result.current.addedPermissions).toEqual({
-        something: "something",
+        something: 'something',
       });
 
       act(() => {
-        result.current.blockPermissions(["something"]);
+        result.current.blockPermissions(['something']);
       });
 
       expect(result.current.addedPermissions).toEqual({});
       expect(result.current.blockedPermissions).toEqual({
-        something: "something",
+        something: 'something',
       });
       act(() => {
-        result.current.addPermissions(["something2"]);
+        result.current.addPermissions(['something2']);
       });
       expect(result.current.addedPermissions).toEqual({
-        something2: "something2",
+        something2: 'something2',
       });
       expect(result.current.blockedPermissions).toEqual({
-        something: "something",
+        something: 'something',
       });
     });
 
-    it("Should be able to modify roles", () => {
+    it('Should be able to modify roles', () => {
       const { result } = renderHook(hooks.useRBACContext, {
-        initialProps: { permissions: ["add_credit"] },
+        initialProps: { permissions: ['add_credit'] },
         wrapper: ({ children, permissions }) => (
           <RBACContextProvider permissions={permissions}>
             {children}
@@ -110,35 +105,35 @@ Array [
       });
 
       act(() => {
-        result.current.addRoles(["something"]);
+        result.current.addRoles(['something']);
       });
 
       expect(result.current.addedRoles).toEqual({
-        something: "something",
+        something: 'something',
       });
 
       act(() => {
-        result.current.blockRoles(["something"]);
+        result.current.blockRoles(['something']);
       });
 
       expect(result.current.addedRoles).toEqual({});
       expect(result.current.blockedRoles).toEqual({
-        something: "something",
+        something: 'something',
       });
       act(() => {
-        result.current.addRoles(["something2"]);
+        result.current.addRoles(['something2']);
       });
       expect(result.current.addedRoles).toEqual({
-        something2: "something2",
+        something2: 'something2',
       });
       expect(result.current.blockedRoles).toEqual({
-        something: "something",
+        something: 'something',
       });
     });
 
-    it("Should be able to reset all modifications", () => {
+    it('Should be able to reset all modifications', () => {
       const { result } = renderHook(hooks.useRBACContext, {
-        initialProps: { permissions: ["add_credit"] },
+        initialProps: { permissions: ['add_credit'] },
         wrapper: ({ children, permissions }) => (
           <RBACContextProvider permissions={permissions}>
             {children}
@@ -147,27 +142,27 @@ Array [
       });
 
       act(() => {
-        result.current.addRoles(["something"]);
-        result.current.addPermissions(["something"]);
+        result.current.addRoles(['something']);
+        result.current.addPermissions(['something']);
       });
 
       expect(result.current.addedRoles).toEqual({
-        something: "something",
+        something: 'something',
       });
       expect(result.current.addedPermissions).toEqual({
-        something: "something",
+        something: 'something',
       });
 
       act(() => {
-        result.current.blockRoles(["something2"]);
-        result.current.blockPermissions(["something2"]);
+        result.current.blockRoles(['something2']);
+        result.current.blockPermissions(['something2']);
       });
 
       expect(result.current.blockedRoles).toEqual({
-        something2: "something2",
+        something2: 'something2',
       });
       expect(result.current.blockedPermissions).toEqual({
-        something2: "something2",
+        something2: 'something2',
       });
 
       act(() => {

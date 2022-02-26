@@ -1,19 +1,19 @@
-import React from "react";
+import React from 'react';
 import {
   useRBACContext,
   useRBACComponentPermissions,
   useHasRoles,
   useHasPermissions,
-} from "./RBAC.hooks";
-import { RBACComponent } from "./RBACComponent";
-import { withRBAC } from "./withRBAC";
-import { RBACContextProvider } from "./RBACContext";
+} from './RBAC.hooks';
+import { RBACComponent } from './RBACComponent';
+import { withRBAC } from './withRBAC';
+import { RBACContextProvider } from './RBACContext';
 import {
   RBACComponentProps,
   RBACContextProps,
   RBACContextState,
   RBACProviderProps,
-} from "./RBAC.types";
+} from './RBAC.types';
 
 export function RBACFactory<R extends string, P extends string>(): {
   RBAC: {
@@ -24,7 +24,7 @@ export function RBACFactory<R extends string, P extends string>(): {
     Component: (props: RBACComponentProps<R, P>) => JSX.Element;
     with: (
       WrappedComponent: React.ComponentType<object>,
-      rbacProps: Omit<RBACComponentProps<R, P>, "children">
+      rbacProps: Omit<RBACComponentProps<R, P>, 'children'>
     ) => (props: object) => JSX.Element;
     useContext: () => RBACContextProps<R, P>;
     useComponentPermissions: (

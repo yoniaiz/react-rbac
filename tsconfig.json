@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "declaration": true,
+    "skipLibCheck": true,
     "declarationDir": "build",
     "module": "esnext",
     "target": "es5",
@@ -15,6 +16,7 @@
   "exclude": [
     "node_modules",
     "build",
+    "dist",
     "src/**/*.stories.tsx",
     "src/**/*.test.tsx"
   ]

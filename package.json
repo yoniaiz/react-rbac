@@ -5,12 +5,35 @@
   "main": "build/index.js",
   "module": "build/index.es.js",
   "types": "build/src",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "tsc"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.+(ts|tsx|js|jsx)": [
+      "eslint"
+    ],
+    "src/**/*.+(ts|tsx)": [
+      "jest --findRelatedTests --watchAll=false"
+    ],
+    "src/**/*.+(ts|tsx|json)": [
+      "prettier --write"
+    ]
+  },
   "scripts": {
     "start": "npm run build && rimraf dist && rollup -c rollup-server.config.js -w",
     "prebuild": "rimraf build",
     "build": "rollup -c rollup.config.js",
     "test": "jest",
-    "test:watch": "jest --watchAll"
+    "test:watch": "jest --watchAll",
+    "prettier": "prettier . --ignore-path .gitignore",
+    "format:check": "npm run prettier -- --check",
+    "format:fix": "npm run prettier -- --write",
+    "lint": "eslint --ext .tsx,.ts .",
+    "type:check": "tsc",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
@@ -29,12 +52,22 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/react-hooks": "^7.0.2",
     "@types/jest": "^27.0.3",
+    "@types/lodash.isequal": "^4.5.5",
     "@types/react": "^17.0.37",
+    "@typescript-eslint/eslint-plugin": "^5.12.1",
+    "@typescript-eslint/parser": "^5.12.1",
     "babel-loader": "^8.2.3",
     "babel-preset-react-app": "^10.0.1",
+    "eslint": "^8.10.0",
+    "eslint-config-prettier": "^8.4.0",
+    "eslint-plugin-react": "^7.29.2",
+    "eslint-plugin-security": "^1.4.0",
     "html-webpack-plugin": "^5.5.0",
+    "husky": "^7.0.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.4.5",
+    "lint-staged": "^12.3.4",
+    "prettier": "^2.5.1",
     "react-dom": "^17.0.2",
     "rimraf": "^3.0.2",
     "rollup": "^2.68.0",

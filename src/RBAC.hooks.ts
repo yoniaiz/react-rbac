@@ -1,7 +1,7 @@
-import { useContext } from "react";
-import { RBACContextProps } from "./RBAC.types";
-import { checkIfRBACValid } from "./RBAC.utils";
-import { RBACContext } from "./RBACContext";
+import { useContext } from 'react';
+import { RBACContextProps } from './RBAC.types';
+import { checkIfRBACValid } from './RBAC.utils';
+import { RBACContext } from './RBACContext';
 
 export const useRBACComponentPermissions = <
   R extends string = string,
@@ -50,9 +50,9 @@ export const useHasRoles = <
   >();
 
   return roles.map((permission) => ({
-    existing: !!existingRolesNorm[permission],
-    added: !!addedRoles[permission],
-    blocked: !!blockedRoles[permission],
+    existing: !!existingRolesNorm[`${permission}` as R],
+    added: !!addedRoles[`${permission}` as R],
+    blocked: !!blockedRoles[`${permission}` as R],
   }));
 };
 
@@ -66,9 +66,9 @@ export const useHasPermissions = <
     useRBACContext<R, P>();
 
   return permissions.map((permission) => ({
-    existing: !!existingPermissionsNorm[permission],
-    added: !!addedPermissions[permission],
-    blocked: !!blockedPermissions[permission],
+    existing: !!existingPermissionsNorm[`${permission}` as P],
+    added: !!addedPermissions[`${permission}` as P],
+    blocked: !!blockedPermissions[`${permission}` as P],
   }));
 };
 
@@ -79,7 +79,7 @@ export const useRBACContext = <
   const context = useContext(RBACContext);
 
   if (!context) {
-    throw new Error("Please connect RBAC context");
+    throw new Error('Please connect RBAC context');
   }
 
   return context as RBACContextProps<R, P>;

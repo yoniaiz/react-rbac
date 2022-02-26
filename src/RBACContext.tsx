@@ -1,10 +1,10 @@
-import React, { createContext } from "react";
+import React, { createContext } from 'react';
 import {
   RBACContextProps,
   RBACContextState,
   RBACProviderProps,
-} from "./RBAC.types";
-import { normalizeArr, omit, shouldUpdateRBAC } from "./RBAC.utils";
+} from './RBAC.types';
+import { normalizeArr, omit, shouldUpdateRBAC } from './RBAC.utils';
 
 export const RBACContext = createContext<RBACContextProps>(null);
 
@@ -69,8 +69,8 @@ export class RBACContextProvider<
   addPermissions = (added: string[]) => {
     const filteredAdded = added.filter(
       (add) =>
-        !this.state.existingPermissionsNorm[add] ||
-        this.state.blockedPermissions[add]
+        !this.state.existingPermissionsNorm[`${add}`] ||
+        this.state.blockedPermissions[`${add}`]
     );
     if (!filteredAdded.length) return;
 
@@ -105,7 +105,8 @@ export class RBACContextProvider<
   addRoles = (added: string[]) => {
     const filteredAdded = added.filter(
       (add) =>
-        !this.state.existingRolesNorm[add] || this.state.blockedRoles[add]
+        !this.state.existingRolesNorm[`${add}`] ||
+        this.state.blockedRoles[`${add}`]
     );
     if (!filteredAdded.length) return;
 
@@ -123,7 +124,11 @@ export class RBACContextProvider<
   };
 
   resetRoles = () => {
-    this.setState((prev) => ({ ...prev, blockedRoles: {}, addedRoles: {} }));
+    this.setState((prev) => ({
+      ...prev,
+      blockedRoles: {},
+      addedRoles: {},
+    }));
   };
 
   resetPermissions = () => {
@@ -152,7 +157,7 @@ export class RBACContextProvider<
     };
     return (
       <RBACContext.Provider value={sharedState}>
-        {typeof this.props.children === "function"
+        {typeof this.props.children === 'function'
           ? this.props.children(sharedState)
           : this.props.children}
       </RBACContext.Provider>

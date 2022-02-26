@@ -1,5 +1,5 @@
-import React from "react";
-import { withRBAC } from "../..";
+import React from 'react';
+import { withRBAC } from '../..';
 
 const ComponentWithHOC = () => {
   return (
@@ -10,5 +10,5 @@ const ComponentWithHOC = () => {
 };
 
 export default withRBAC(ComponentWithHOC, {
-  requiredPermissions: ["delete_all"],
+  requiredPermissions: ['delete_all'],
 });

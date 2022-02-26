@@ -1,1 +1,1 @@
-export const BLOCKED_CLASS_NAME = "rbac-block";
+export const BLOCKED_CLASS_NAME = 'rbac-block';
